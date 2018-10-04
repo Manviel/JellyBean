@@ -10,22 +10,16 @@
 
 {% for field in form %}
 <div class="form-group">
-  {{ field.labet_tag }}
-
-  {% if form.is_bound %}
+  {{ field.label_tag }}
   {% render_field field class=field|input_class %}
   {% for error in field.errors %}
   <div class="invalid-feedback">
     {{ error }}
   </div>
   {% endfor %}
-  {% else %}
-  {% render_field field class=field|input_class %}
-  {% endif %}
-
   {% if field.help_text %}
   <small class="form-text text-muted">
-    {{ field.help_text|safe }}
+    {{ field.help_text }}
   </small>
   {% endif %}
 </div>
