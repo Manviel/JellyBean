@@ -13,7 +13,7 @@ class ReplyTopicTestCase(TestCase):
         )
         self.username = 'john'
         self.password = '123'
-        user = User.objects.created_user(
+        user = User.objects.create_user(
             username=self.username,
             email='john@doe.com',
             password=self.password
@@ -32,13 +32,3 @@ class ReplyTopicTestCase(TestCase):
             'reply_topic',
             kwargs={'pk': self.board.pk, 'topic_pk': self.topic.pk}
         )
-
-
-class SuccessfulReplyTopicTests(ReplyTopicTestCase):
-    def test_redirection(self):
-        url = reverse('topic_posts', kwargs={
-            'pk': self.board.pk,
-            'topic_pk': self.topic.pk
-        })
-        topic_posts_url = '{url}?page=1#2'.format(url=url)
-        self.assertRedirects(self.response, topic_posts_url)
