@@ -30,6 +30,16 @@ urlpatterns = [
         name='edit_post'
     ),
     path('signup/', accounts_views.signup, name='signup'),
+    path(
+        'signup/blogger/',
+        accounts_views.BloggerSignUpView.as_view(),
+        name='blogger_signup'
+    ),
+    path(
+        'signup/reader/',
+        accounts_views.ReaderSignUpView.as_view(),
+        name='reader_signup'
+    ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path(
         'login/',
