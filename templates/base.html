@@ -60,10 +60,13 @@
     {% endblock %}
   </div>
   {% endblock body %}
+
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/popper.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  {% block javascript %}{% endblock %}
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'js/infinite.min.js' %}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 
 </html>
