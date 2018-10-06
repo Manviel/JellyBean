@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from .models import Subject, User, Reader
+from .models import Subject, User, Reader, Blogger
 
 
 class SignUpForm(UserCreationForm):
@@ -22,7 +22,7 @@ class UserInformationUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', )
+        fields = ('email', )
 
 
 class ReaderSignUpForm(UserCreationForm):
@@ -46,12 +46,22 @@ class ReaderSignUpForm(UserCreationForm):
 
 
 class BloggerSignUpForm(UserCreationForm):
+    birth = forms.DateTimeField(
+        widget=forms.DateInput(
+            format='%m/%d/%Y',
+            attrs={'class': 'datepicker'}
+        ),
+        input_formats=('%m/%d/%Y', ),
+        required=True
+    )
+
     class Meta(UserCreationForm.Meta):
         model = User
 
-    def save(self, commit=True):
+    @transaction.atomic
+    def save(self):
         user = super().save(commit=False)
         user.is_blogger = True
-        if commit:
-            user.save()
+        user.save()
+        blogger = Blogger.objects.create(user=user)
         return user

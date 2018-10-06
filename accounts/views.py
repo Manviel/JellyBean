@@ -6,7 +6,11 @@ from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, CreateView
 
 from .forms import SignUpForm, UserInformationUpdateForm, BloggerSignUpForm, ReaderSignUpForm
-from .models import User
+from .models import User, Reader
+
+
+def choose(request):
+    return render(request, 'includes/choose.html')
 
 
 def signup(request):
@@ -24,7 +28,7 @@ def signup(request):
 class ReaderSignUpView(CreateView):
     model = User
     form_class = ReaderSignUpForm
-    template_name = 'register/signup_form.html'
+    template_name = 'signup.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'reader'
@@ -33,13 +37,13 @@ class ReaderSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('readers')
+        return redirect('home')
 
 
 class BloggerSignUpView(CreateView):
     model = User
     form_class = BloggerSignUpForm
-    template_name = 'register/signup_form.html'
+    template_name = 'signup.html'
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'blogger'
@@ -48,7 +52,7 @@ class BloggerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('bloggers')
+        return redirect('home')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -59,3 +63,17 @@ class UserUpdateView(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+
+@method_decorator(login_required, name='dispatch')
+class interestsView(UpdateView):
+    model = Reader
+    form_class = ReaderSignUpForm
+    template_name = 'interests.html'
+    success_url = reverse_lazy('home')
+
+    def get_object(self):
+        return self.request.user.reader
+
+    def form_valid(self, form):
+        return super().form_valid(form)

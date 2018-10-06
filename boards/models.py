@@ -1,7 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.text import Truncator
 from django.utils.html import mark_safe
+
+from accounts.models import User
 
 from markdown import markdown
 import math

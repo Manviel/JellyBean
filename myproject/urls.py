@@ -29,7 +29,7 @@ urlpatterns = [
         views.PostUpdateView.as_view(),
         name='edit_post'
     ),
-    path('signup/', accounts_views.signup, name='signup'),
+    path('signup/', accounts_views.choose, name='signup'),
     path(
         'signup/blogger/',
         accounts_views.BloggerSignUpView.as_view(),

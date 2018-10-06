@@ -1,3 +1,12 @@
 body { background-color: #f0f0f0; }
 
+ul { list-style-type: none; }
+
+label { display: block; }
+
+.form-control:last-child {
+  display: inline-block;
+  width: auto;
+}
+
 .logo a { color: rgba(0,0,0,.9); }

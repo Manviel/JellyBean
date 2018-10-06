@@ -1,0 +1,20 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Choose role</h3>
+        <a href="{% url 'blogger_signup' %}" class="btn btn-primary btn-block">Blogger</a>
+        <a href="{% url 'reader_signup' %}" class="btn btn-primary btn-block">Reader</a>
+      </div>
+      <div class="card-footer text-muted text-center">
+        Already have an account? <a href="{% url 'login' %}">Log in</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
