@@ -27,7 +27,6 @@ class Reader(models.Model):
         on_delete=models.CASCADE,
         primary_key=True
     )
-    interests = models.ManyToManyField(Subject, related_name='interests')
 
     def __str__(self):
         return self.user.username
@@ -43,6 +42,7 @@ class Blogger(models.Model):
         auto_now = False,
         null = True
     )
+    hobbies = models.ManyToManyField(Subject, related_name='hobbies')
 
     def __str__(self):
         return self.user.username

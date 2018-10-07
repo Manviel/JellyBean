@@ -5,24 +5,12 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, CreateView
 
-from .forms import SignUpForm, UserInformationUpdateForm, BloggerSignUpForm, ReaderSignUpForm
+from .forms import UserInformationUpdateForm, BloggerSignUpForm, ReaderSignUpForm
 from .models import User, Reader
 
 
 def choose(request):
     return render(request, 'includes/choose.html')
-
-
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
 
 
 class ReaderSignUpView(CreateView):
@@ -66,10 +54,9 @@ class UserUpdateView(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class interestsView(UpdateView):
-    model = Reader
+class InterestsView(UpdateView):
     form_class = ReaderSignUpForm
-    template_name = 'interests.html'
+    template_name = 'my_account.html'
     success_url = reverse_lazy('home')
 
     def get_object(self):

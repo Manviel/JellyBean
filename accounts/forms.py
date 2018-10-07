@@ -5,31 +5,21 @@ from django.db import transaction
 from .models import Subject, User, Reader, Blogger
 
 
-class SignUpForm(UserCreationForm):
-    email = forms.CharField(
-        max_length=254,
-        required=True,
-        widget=forms.EmailInput()
-    )
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2')
-
-
 class UserInformationUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
     class Meta:
         model = User
-        fields = ('email', )
+        fields = ('username', )
 
 
 class ReaderSignUpForm(UserCreationForm):
-    interests = forms.ModelMultipleChoiceField(
-        queryset=Subject.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
+    CHOICES = (
+        (1, 'Games'),
+        (2, 'Music'),
+        (3, 'Sport')
+    )
+    interests = forms.MultipleChoiceField(
+        choices=CHOICES,
+        required=False
     )
 
     class Meta(UserCreationForm.Meta):
@@ -54,6 +44,11 @@ class BloggerSignUpForm(UserCreationForm):
         input_formats=('%m/%d/%Y', ),
         required=True
     )
+    hobbies = forms.ModelMultipleChoiceField(
+        queryset=Subject.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -64,4 +59,5 @@ class BloggerSignUpForm(UserCreationForm):
         user.is_blogger = True
         user.save()
         blogger = Blogger.objects.create(user=user)
+        blogger.hobbies.add(*self.cleaned_data.get('hobbies'))
         return user

@@ -5,9 +5,11 @@ from django.views.generic import UpdateView, ListView
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 from .models import Board, Post, Topic
-from .forms import NewTopicForm, PostForm
+from .forms import NewTopicForm, PostForm, BoardForm
 
 
 def home(request):
@@ -78,6 +80,33 @@ def new_topic(request, pk):
     else:
         form = NewTopicForm()
     return render(request, 'new_topic.html', {'board': board, 'form': form})
+
+
+def board_create(request):
+    data = dict()
+
+    if request.method == 'POST':
+        form = BoardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            boards = Board.objects.all()
+            data['list'] = render_to_string(
+                'includes/list.html',
+                {'boards': boards}
+            )
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = BoardForm()
+
+    context = {'form': form}
+    data['html'] = render_to_string(
+        'board_create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
 
 
 @login_required

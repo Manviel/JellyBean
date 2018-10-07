@@ -8,6 +8,7 @@ from boards import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('boards/create/', views.board_create, name='board_create'),
     path(
         'boards/<int:pk>/',
         views.TopicListView.as_view(),
