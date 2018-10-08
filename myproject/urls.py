@@ -1,13 +1,12 @@
 from django.contrib import admin
-from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import path
 
 from accounts import views as accounts_views
 from boards import views
 
-
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.BoardListView.as_view(), name='home'),
     path('boards/create/', views.board_create, name='board_create'),
     path(
         'boards/<int:pk>/',

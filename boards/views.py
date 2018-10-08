@@ -1,20 +1,23 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.views.generic import UpdateView, ListView
-from django.utils import timezone
-from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, UpdateView
 
+from .forms import BoardForm, NewTopicForm, PostForm
 from .models import Board, Post, Topic
-from .forms import NewTopicForm, PostForm, BoardForm
 
 
-def home(request):
-    boards = Board.objects.all()
-    return render(request, 'home.html', {'boards': boards})
+class BoardListView(ListView):
+    model = Board
+    template_name = 'home.html'
+    context_object_name = 'boards'
+    paginate_by = 5
+    queryset = Board.objects.all()
 
 
 class TopicListView(ListView):
