@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.flatpages import views as flat
-from django.urls import path
+from django.urls import include, path
 
 from accounts import views as accounts_views
 from boards import views
@@ -79,6 +79,7 @@ urlpatterns = [
         ),
         name='password_reset_complete'
     ),
+    path('settings/', accounts_views.settings, name='settings'),
     path(
         'settings/password/',
         auth_views.PasswordChangeView.as_view(
@@ -110,5 +111,6 @@ urlpatterns = [
         {'url': '/pages/terms'},
         name='terms'
     ),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls)
 ]

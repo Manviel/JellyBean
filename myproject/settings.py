@@ -10,6 +10,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm3iaw3mk4&qax9a&b2u@1dce78n*49j)1%l)q8qyo2gtj+$&&='
 
+SOCIAL_AUTH_GITHUB_KEY = '7c5f9ed2d0ff6426c091'
+SOCIAL_AUTH_GITHUB_SECRET = '8f205c56cabac7056db34cf2e544d80e844ca011'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '521404275043105'
+SOCIAL_AUTH_FACEBOOK_SECRET = '25b4065b85a6be75c3edd4995572e76f'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -28,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.flatpages',
     'django.contrib.sites',
+    'social_django',
     'widget_tweaks',
     'accounts',
     'boards',
@@ -41,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -58,12 +66,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Database
@@ -129,5 +146,10 @@ STATICFILES_DIRS = [
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

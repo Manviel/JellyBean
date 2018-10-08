@@ -18,6 +18,12 @@
       <div class="card-footer text-muted text-center">
         New to Django Boards? <a href="{% url 'signup' %}">Sign up</a>
       </div>
+      <div class="card-footer text-muted text-center">
+        <a href="{% url 'social:begin' 'github' %}">Log in with GitHub</a>
+      </div>
+      <div class="card-footer text-muted text-center">
+        <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+      </div>
     </div>
     <div class="text-center py-2">
       <small>

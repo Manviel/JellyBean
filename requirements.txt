@@ -3,3 +3,4 @@ psycopg2
 django-widget-tweaks==1.4.3
 Markdown==3.0.1
 pytz==2018.5
+social-auth-app-django==2.1.0

@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
 
+from social_django.models import UserSocialAuth
+
 from .forms import (BloggerSignUpForm, ReaderSignUpForm,
                     UserInformationUpdateForm)
 from .models import User
@@ -59,6 +61,24 @@ def updateView(request):
     else:
         form = UserInformationUpdateForm(instance=request.user)
     return render(request, 'my_account.html', {'form': form})
+
+
+@login_required
+def settings(request):
+    user = request.user
+
+    try:
+        github_login = user.social_auth.get(provider='github')
+    except UserSocialAuth.DoesNotExist:
+        github_login = None
+
+    can_disconnect = (user.social_auth.count() >
+                      1 or user.has_usable_password())
+
+    return render(request, 'settings.html', {
+        'github_login': github_login,
+        'can_disconnect': can_disconnect
+    })
 
 
 @method_decorator(login_required, name='dispatch')
