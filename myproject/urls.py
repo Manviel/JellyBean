@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.flatpages import views as flat
 from django.urls import path
 
 from accounts import views as accounts_views
@@ -96,6 +97,18 @@ urlpatterns = [
         'settings/account/',
         accounts_views.updateView,
         name='my_account'
+    ),
+    path(
+        'pages/privacy/',
+        flat.flatpage,
+        {'url': '/pages/privacy'},
+        name='privacy'
+    ),
+    path(
+        'pages/terms/',
+        flat.flatpage,
+        {'url': '/pages/terms'},
+        name='terms'
     ),
     path('admin/', admin.site.urls)
 ]

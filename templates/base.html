@@ -1,4 +1,5 @@
 {% load static %}
+{% load flatpages %}
 <!DOCTYPE html>
 <html>
 
@@ -6,6 +7,7 @@
   <meta charset="utf-8">
   <title>{% block title %}Django Boards{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
   {% block stylesheet %}{% endblock %}
 </head>
 
@@ -75,6 +77,12 @@
       </div>
     </div>
   </div>
+  <footer class="footer">
+    <div class="container">
+      <a class="text-muted" href="{% url 'privacy' %}">Privacy</a>
+      <a class="text-muted" href="{% url 'terms' %}">Terms</a>
+    </div>
+  </footer>
   {% endblock body %}
 
   <script src="{% static 'js/jquery.js' %}"></script>
