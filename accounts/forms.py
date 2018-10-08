@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from .models import Subject, User, Reader, Blogger
+from .models import Blogger, Reader, Subject, User
 
 
 class UserInformationUpdateForm(forms.ModelForm):

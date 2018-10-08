@@ -94,7 +94,7 @@ urlpatterns = [
     ),
     path(
         'settings/account/',
-        accounts_views.UserUpdateView.as_view(),
+        accounts_views.updateView,
         name='my_account'
     ),
     path('admin/', admin.site.urls)

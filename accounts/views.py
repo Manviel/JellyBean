@@ -1,12 +1,14 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import CreateView, UpdateView
 
-from .forms import UserInformationUpdateForm, BloggerSignUpForm, ReaderSignUpForm
-from .models import User, Reader
+from .forms import (BloggerSignUpForm, ReaderSignUpForm,
+                    UserInformationUpdateForm)
+from .models import User
 
 
 def choose(request):
@@ -43,14 +45,20 @@ class BloggerSignUpView(CreateView):
         return redirect('home')
 
 
-@method_decorator(login_required, name='dispatch')
-class UserUpdateView(UpdateView):
-    form_class = UserInformationUpdateForm
-    template_name = 'my_account.html'
-    success_url = reverse_lazy('my_account')
-
-    def get_object(self):
-        return self.request.user
+@login_required
+def updateView(request):
+    if request.method == 'POST':
+        form = UserInformationUpdateForm(
+            data=request.POST,
+            instance=request.user
+        )
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            messages.success(request, 'Has been update')
+    else:
+        form = UserInformationUpdateForm(instance=request.user)
+    return render(request, 'my_account.html', {'form': form})
 
 
 @method_decorator(login_required, name='dispatch')

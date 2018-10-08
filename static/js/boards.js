@@ -1,14 +1,14 @@
-$(function () {
-  var loadForm = function () {
+$(function() {
+  var loadForm = function() {
     var btn = $(this);
     $.ajax({
       url: btn.attr("data-url"),
       type: 'get',
       dataType: 'json',
-      beforeSend: function () {
+      beforeSend: function() {
         $("#modal-board").modal("show");
       },
-      success: function (data) {
+      success: function(data) {
         $("#modal-board .modal-content").html(data.html);
       }
     });
@@ -21,12 +21,13 @@ $(function () {
       data: form.serialize(),
       type: form.attr("method"),
       dataType: 'json',
-      success: function (data) {
+      success: function(data) {
         if (data.form_is_valid) {
+          console.log(2)
           $("#board-table tbody").html(data.list);
           $("#modal-board").modal("hide");
-        }
-        else {
+          $("#messages").html(data.msg);
+        } else {
           $("#modal-board .modal-content").html(data.html);
         }
       }

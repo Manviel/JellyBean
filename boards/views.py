@@ -64,6 +64,84 @@ class PostListView(ListView):
         return queryset
 
 
+def save_board_form(request, form, template_name, msg):
+    data = dict()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            boards = Board.objects.all()
+            data['list'] = render_to_string(
+                'includes/list.html',
+                {'boards': boards}
+            )
+            data['msg'] = render_to_string(
+                'includes/messages.html',
+                {'message': msg}
+            )
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html'] = render_to_string(
+        template_name,
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+
+
+def board_create(request):
+    if request.method == 'POST':
+        form = BoardForm(request.POST)
+    else:
+        form = BoardForm()
+    return save_board_form(
+        request,
+        form,
+        'board_create.html',
+        'Has been created'
+    )
+
+
+def board_update(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    if request.method == 'POST':
+        form = BoardForm(request.POST, instance=board)
+    else:
+        form = BoardForm(instance=board)
+    return save_board_form(
+        request,
+        form,
+        'board_update.html',
+        'Has been updated'
+    )
+
+
+def board_delete(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        board.delete()
+        data['form_is_valid'] = True
+        boards = Board.objects.all()
+        data['list'] = render_to_string(
+            'includes/list.html',
+            {'boards': boards}
+        )
+        data['msg'] = render_to_string(
+            'includes/messages.html',
+            {'message': 'Has been deleted'}
+        )
+    else:
+        context = {'board': board}
+        data['html'] = render_to_string(
+            'board_delete.html',
+            context,
+            request=request,
+        )
+    return JsonResponse(data)
+
+
 @login_required
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
@@ -83,66 +161,6 @@ def new_topic(request, pk):
     else:
         form = NewTopicForm()
     return render(request, 'new_topic.html', {'board': board, 'form': form})
-
-
-def save_board_form(request, form, template_name):
-    data = dict()
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-            boards = Board.objects.all()
-            data['list'] = render_to_string(
-                'includes/list.html',
-                {'boards': boards}
-            )
-        else:
-            data['form_is_valid'] = False
-    context = {'form': form}
-    data['html'] = render_to_string(
-        template_name,
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-
-
-def board_create(request):
-    if request.method == 'POST':
-        form = BoardForm(request.POST)
-    else:
-        form = BoardForm()
-    return save_board_form(request, form, 'board_create.html')
-
-
-def board_update(request, pk):
-    board = get_object_or_404(Board, pk=pk)
-    if request.method == 'POST':
-        form = BoardForm(request.POST, instance=board)
-    else:
-        form = BoardForm(instance=board)
-    return save_board_form(request, form, 'board_update.html')
-
-
-def board_delete(request, pk):
-    board = get_object_or_404(Board, pk=pk)
-    data = dict()
-    if request.method == 'POST':
-        board.delete()
-        data['form_is_valid'] = True
-        boards = Board.objects.all()
-        data['list'] = render_to_string(
-            'includes/list.html',
-            {'boards': boards}
-        )
-    else:
-        context = {'board': board}
-        data['html'] = render_to_string(
-            'board_delete.html',
-            context,
-            request=request,
-        )
-    return JsonResponse(data)
 
 
 @login_required
