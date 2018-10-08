@@ -12,6 +12,10 @@
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ next }}">
           {% include 'includes/form.html' %}
+
+          <script src='https://www.google.com/recaptcha/api.js'></script>
+          <div class="g-recaptcha" data-sitekey="6LcVC3QUAAAAALSqolOvper_7h0EzhCvtvSEoFuL"></div>
+          
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
       </div>

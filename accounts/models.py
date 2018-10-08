@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.html import escape, mark_safe
 
 
 class User(AbstractUser):
@@ -21,12 +22,20 @@ class Subject(models.Model):
         return mark_safe(html)
 
 
+class Choice(models.Model):
+    description = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.description
+
+
 class Reader(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         primary_key=True
     )
+    interests = models.ManyToManyField(Choice, related_name='interests')
 
     def __str__(self):
         return self.user.username
@@ -39,8 +48,8 @@ class Blogger(models.Model):
         primary_key=True
     )
     birth = models.DateTimeField(
-        auto_now = False,
-        null = True
+        auto_now=False,
+        null=True
     )
     hobbies = models.ManyToManyField(Subject, related_name='hobbies')
 

@@ -11,6 +11,10 @@
         <form method="post" novalidate>
           {% csrf_token %}
           {% include 'includes/form.html' %}
+
+          <script src='https://www.google.com/recaptcha/api.js'></script>
+          <div class="g-recaptcha" data-sitekey="6LcVC3QUAAAAALSqolOvper_7h0EzhCvtvSEoFuL"></div>
+          
           <button type="submit" class="btn btn-primary btn-block">
             Create an account
           </button>
