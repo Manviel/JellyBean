@@ -1,20 +1,16 @@
-{% load widget_tweaks %}
-
-<form method="post" action="{% url 'board_create' %}" class="js-create-form">
+<form method="post" action="{% url 'board_delete' board.id %}" class="js-delete-form">
   {% csrf_token %}
   <div class="modal-header">
-    <h4 class="modal-title">Create a new board</h4>
+    <h4 class="modal-title">Confirm board deletion</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    {% include 'includes/partial_form.html' %}
+    <p class="lead">Are you sure you want to delete the <strong>{{ board.name }}</strong>?</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary">
-      Create board
-    </button>
+    <button type="submit" class="btn btn-danger">Delete board</button>
   </div>
 </form>

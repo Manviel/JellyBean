@@ -28,5 +28,15 @@
 
     {% endwith %}
   </td>
+  <td class="align-middle">
+    <button class="btn btn-warning js-update" data-url="{% url 'board_update' board.id %}">
+      Edit
+    </button>
+  </td>
+  <td class="align-middle">
+    <button class="btn btn-danger js-delete" data-url="{% url 'board_delete' board.id %}">
+      Delete
+    </button>
+  </td>
 </tr>
 {% endfor %}

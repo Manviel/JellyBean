@@ -82,11 +82,9 @@ def new_topic(request, pk):
     return render(request, 'new_topic.html', {'board': board, 'form': form})
 
 
-def board_create(request):
+def save_board_form(request, form, template_name):
     data = dict()
-
     if request.method == 'POST':
-        form = BoardForm(request.POST)
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
@@ -97,15 +95,50 @@ def board_create(request):
             )
         else:
             data['form_is_valid'] = False
-    else:
-        form = BoardForm()
-
     context = {'form': form}
     data['html'] = render_to_string(
-        'board_create.html',
+        template_name,
         context,
         request=request,
     )
+    return JsonResponse(data)
+
+
+def board_create(request):
+    if request.method == 'POST':
+        form = BoardForm(request.POST)
+    else:
+        form = BoardForm()
+    return save_board_form(request, form, 'board_create.html')
+
+
+def board_update(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    if request.method == 'POST':
+        form = BoardForm(request.POST, instance=board)
+    else:
+        form = BoardForm(instance=board)
+    return save_board_form(request, form, 'board_update.html')
+
+
+def board_delete(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        board.delete()
+        data['form_is_valid'] = True
+        boards = Board.objects.all()
+        data['list'] = render_to_string(
+            'includes/list.html',
+            {'boards': boards}
+        )
+    else:
+        context = {'board': board}
+        data['html'] = render_to_string(
+            'board_delete.html',
+            context,
+            request=request,
+        )
     return JsonResponse(data)
 
 

@@ -1,7 +1,8 @@
 $(function () {
-  $(".js-create").click(function () {
+  var loadForm = function () {
+    var btn = $(this);
     $.ajax({
-      url: '/boards/create/',
+      url: btn.attr("data-url"),
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
@@ -11,9 +12,9 @@ $(function () {
         $("#modal-board .modal-content").html(data.html);
       }
     });
-  });
+  };
 
-  $("#modal-board").on("submit", ".js-create-form", function() {
+  var saveForm = function() {
     var form = $(this);
     $.ajax({
       url: form.attr("action"),
@@ -31,5 +32,14 @@ $(function () {
       }
     });
     return false;
-  });
+  };
+
+  $(".js-create").click(loadForm);
+  $("#modal-board").on("submit", ".js-create-form", saveForm);
+
+  $("#board-table").on("click", ".js-update", loadForm);
+  $("#modal-board").on("submit", ".js-update-form", saveForm);
+
+  $("#board-table").on("click", ".js-delete", loadForm);
+  $("#modal-board").on("submit", ".js-delete-form", saveForm);
 });

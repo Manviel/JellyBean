@@ -15,6 +15,8 @@ urlpatterns = [
         name='board_topics'
     ),
     path('boards/<int:pk>/new/', views.new_topic, name='new_topic'),
+    path('boards/<int:pk>/update/', views.board_update, name='board_update'),
+    path('boards/<int:pk>/delete/', views.board_delete, name='board_delete'),
     path(
         'boards/<int:pk>/topics/<int:topic_pk>/',
         views.PostListView.as_view(),

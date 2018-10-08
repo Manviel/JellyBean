@@ -42,6 +42,7 @@ class BloggerSignUpForm(UserCreationForm):
             attrs={'class': 'datepicker'}
         ),
         input_formats=('%m/%d/%Y', ),
+        help_text='MM/DD/YYYY',
         required=True
     )
     hobbies = forms.ModelMultipleChoiceField(

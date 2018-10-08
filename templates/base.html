@@ -38,7 +38,9 @@
           </li>
         </ul>
         {% if user.is_blogger %}
-          <button class="btn btn-primary js-create">New board</button>
+          <button class="btn btn-primary js-create" data-url="{% url 'board_create' %}">
+            New board
+          </button>
         {% endif %}
         {% else %}
         <form class="form-inline ml-auto">
