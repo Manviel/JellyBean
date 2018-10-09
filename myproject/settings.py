@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'boards',
+    'xhtml2pdf',
+    'xlwt'
 ]
 
 MIDDLEWARE = [

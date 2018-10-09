@@ -23,6 +23,16 @@ urlpatterns = [
         name='topic_posts'
     ),
     path(
+        'boards/<int:pk>/topics/<int:topic_pk>/pdf/',
+        views.get_pdf,
+        name='export_pdf'
+    ),
+    path(
+        'boards/<int:pk>/topics/<int:topic_pk>/excel/',
+        views.export_users_xls,
+        name='export_xls'
+    ),
+    path(
         'boards/<int:pk>/topics/<int:topic_pk>/reply/',
         views.reply_topic,
         name='reply_topic'

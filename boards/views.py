@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -8,8 +8,11 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView
 
+import xlwt
+
 from .forms import BoardForm, NewTopicForm, PostForm
 from .models import Board, Post, Topic
+from .render import Render
 
 
 class BoardListView(ListView):
@@ -62,6 +65,52 @@ class PostListView(ListView):
         )
         queryset = self.topic.posts.order_by('created_at')
         return queryset
+
+
+def get_pdf(request, pk, topic_pk):
+    topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    if request.method == 'POST':
+        topic = Topic.objects.get(topic_pk=topic_pk)
+    params = {
+        'topic': topic,
+        'request': request
+    }
+    return Render.render('topic_posts.html', params)
+
+
+def export_users_xls(request, pk, topic_pk):
+    topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="my.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Topics')
+
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Subject', 'Board', 'User', 'Views', ]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    font_style = xlwt.XFStyle()
+
+    topic = Topic.objects.all().values_list(
+        'subject',
+        'board',
+        'starter',
+        'views'
+    )
+    for row in topic:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 
 def save_board_form(request, form, template_name, msg):

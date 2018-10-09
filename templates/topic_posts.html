@@ -23,6 +23,12 @@
   <a href="{% url 'reply_topic' topic.board.pk topic.pk %}" class="btn btn-primary" role="button">
     Reply
   </a>
+  <a href="{% url 'export_pdf' topic.board.pk topic.pk %}" class="btn btn-outline-danger" role="button">
+    Export pdf
+  </a>
+  <a href="{% url 'export_xls' topic.board.pk topic.pk %}" class="btn btn-outline-success" role="button">
+    Export Excell
+  </a>
 </div>
 
 <div class="infinite-container">
