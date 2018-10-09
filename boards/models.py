@@ -1,11 +1,11 @@
+import math
+
 from django.db import models
-from django.utils.text import Truncator
 from django.utils.html import mark_safe
+from django.utils.text import Truncator
 
 from accounts.models import User
-
 from markdown import markdown
-import math
 
 
 class Board(models.Model):
@@ -88,3 +88,9 @@ class Post(models.Model):
 
     def get_message_as_markdown(self):
         return mark_safe(markdown(self.message, safe_mode='escape'))
+
+
+class Photo(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    file = models.FileField(upload_to='photos/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

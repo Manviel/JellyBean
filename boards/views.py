@@ -7,13 +7,14 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import FormView, ListView, UpdateView
+from django.views.generic import FormView, ListView, UpdateView, View
 
 import xlwt
 from accounts.models import User
 
-from .forms import BoardForm, GenerateRandomUserForm, NewTopicForm, PostForm
-from .models import Board, Post, Topic
+from .forms import (BoardForm, GenerateRandomUserForm, NewTopicForm, PhotoForm,
+                    PostForm)
+from .models import Board, Photo, Post, Topic
 from .render import Render
 from .tasks import create_random_user_accounts
 
@@ -87,6 +88,29 @@ class GenerateRandomUserView(FormView):
             'We are generating your users! Wait a moment and refresh page'
         )
         return redirect('users_list')
+
+
+class UploadView(View):
+    def get(self, request):
+        photos_list = Photo.objects.all()
+        return render(
+            self.request,
+            'core/basic_upload.html',
+            {'photos': photos_list}
+        )
+
+    def post(self, request):
+        form = PhotoForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            photo = form.save()
+            data = {
+                'is_valid': True,
+                'name': photo.file.name,
+                'url': photo.file.url
+            }
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
 
 
 def get_pdf(request, pk, topic_pk):

@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.flatpages import views as flat
@@ -109,6 +111,7 @@ urlpatterns = [
         accounts_views.updateView,
         name='my_account'
     ),
+    path('pages/', include('django.contrib.flatpages.urls')),
     path(
         'pages/privacy/',
         flat.flatpage,
@@ -127,6 +130,13 @@ urlpatterns = [
         views.GenerateRandomUserView.as_view(),
         name='generate'
     ),
+    path('upload/', views.UploadView.as_view(), name='upload'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls)
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

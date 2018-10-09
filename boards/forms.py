@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from .models import Board, Post, Topic
+from .models import Board, Photo, Post, Topic
 
 
 class NewTopicForm(forms.ModelForm):
@@ -37,3 +37,9 @@ class GenerateRandomUserForm(forms.Form):
             MaxValueValidator(3)
         ]
     )
+
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ('file', )

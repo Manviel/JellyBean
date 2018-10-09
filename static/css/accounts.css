@@ -4,7 +4,7 @@ ul { list-style-type: none; }
 
 label { display: block; }
 
-#id_hobbies {
+input[type="checkbox"] + label {
   display: inline-block;
   width: auto;
 }
