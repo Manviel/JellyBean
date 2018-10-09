@@ -20,6 +20,7 @@ class ReaderSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+        fields = ('username', 'email', )
 
     @transaction.atomic
     def save(self):
@@ -49,6 +50,7 @@ class BloggerSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+        fields = ('username', 'email', )
 
     @transaction.atomic
     def save(self):

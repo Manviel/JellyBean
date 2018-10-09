@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Generate Random Users/li>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <table>
+    {{ form }}
+  </table>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

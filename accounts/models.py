@@ -5,6 +5,12 @@ from django.db import models
 class User(AbstractUser):
     is_reader = models.BooleanField(default=False)
     is_blogger = models.BooleanField(default=False)
+    email = models.EmailField(
+        max_length=70,
+        blank=True,
+        null=True,
+        unique=True
+    )
 
 
 class Subject(models.Model):

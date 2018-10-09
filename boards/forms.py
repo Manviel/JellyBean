@@ -1,6 +1,7 @@
 from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
 
-from .models import Topic, Post, Board
+from .models import Board, Post, Topic
 
 
 class NewTopicForm(forms.ModelForm):
@@ -27,3 +28,12 @@ class BoardForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = ('name', 'description', )
+
+
+class GenerateRandomUserForm(forms.Form):
+    total = forms.IntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(3)
+        ]
+    )

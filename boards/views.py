@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
@@ -6,13 +7,15 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView
+from django.views.generic import FormView, ListView, UpdateView
 
 import xlwt
+from accounts.models import User
 
-from .forms import BoardForm, NewTopicForm, PostForm
+from .forms import BoardForm, GenerateRandomUserForm, NewTopicForm, PostForm
 from .models import Board, Post, Topic
 from .render import Render
+from .tasks import create_random_user_accounts
 
 
 class BoardListView(ListView):
@@ -65,6 +68,25 @@ class PostListView(ListView):
         )
         queryset = self.topic.posts.order_by('created_at')
         return queryset
+
+
+class UsersListView(ListView):
+    template_name = 'core/users_list.html'
+    model = User
+
+
+class GenerateRandomUserView(FormView):
+    template_name = 'core/generate_users.html'
+    form_class = GenerateRandomUserForm
+
+    def form_valid(self, form):
+        total = form.cleaned_data.get('total')
+        create_random_user_accounts(total)
+        messages.success(
+            self.request,
+            'We are generating your users! Wait a moment and refresh page'
+        )
+        return redirect('users_list')
 
 
 def get_pdf(request, pk, topic_pk):

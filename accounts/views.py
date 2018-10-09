@@ -28,7 +28,11 @@ class ReaderSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(
+            self.request,
+            user,
+            backend='django.contrib.auth.backends.ModelBackend'
+        )
         return redirect('home')
 
 
@@ -43,7 +47,11 @@ class BloggerSignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(
+            self.request,
+            user,
+            backend='django.contrib.auth.backends.ModelBackend'
+        )
         return redirect('home')
 
 

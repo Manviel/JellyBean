@@ -121,6 +121,12 @@ urlpatterns = [
         {'url': '/pages/terms'},
         name='terms'
     ),
+    path('celery', views.UsersListView.as_view(), name='users_list'),
+    path(
+        'celery/generate/',
+        views.GenerateRandomUserView.as_view(),
+        name='generate'
+    ),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls)
 ]
