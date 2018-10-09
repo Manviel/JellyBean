@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from .models import Blogger, Choice, Reader, Subject, User
+from .models import Blogger, Reader, Subject, User
 
 
 class UserInformationUpdateForm(forms.ModelForm):
@@ -13,8 +13,8 @@ class UserInformationUpdateForm(forms.ModelForm):
 
 class ReaderSignUpForm(UserCreationForm):
     interests = forms.ModelMultipleChoiceField(
-        queryset=Choice.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        queryset=Subject.objects.all(),
+        widget=forms.SelectMultiple,
         required=True
     )
 
