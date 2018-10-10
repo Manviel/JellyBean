@@ -2,9 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView
 
 from social_django.models import UserSocialAuth
 
@@ -54,6 +52,7 @@ class BloggerSignUpView(CreateView):
             user,
             backend='django.contrib.auth.backends.ModelBackend'
         )
+        email_greet(user.email)
         return redirect('home')
 
 
@@ -89,16 +88,3 @@ def settings(request):
         'github_login': github_login,
         'can_disconnect': can_disconnect
     })
-
-
-@method_decorator(login_required, name='dispatch')
-class InterestsView(UpdateView):
-    form_class = ReaderSignUpForm
-    template_name = 'my_account.html'
-    success_url = reverse_lazy('home')
-
-    def get_object(self):
-        return self.request.user.reader
-
-    def form_valid(self, form):
-        return super().form_valid(form)

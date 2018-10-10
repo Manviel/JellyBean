@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}My account{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/cropper.css' %}">
+{% endblock %}
 
 {% block breadcrumb %}
 <li class="breadcrumb-item active">My account</li>
@@ -9,12 +15,12 @@
 {% block content %}
 
 {% for message in messages %}
-  <div class="alert alert-success alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    {{ message }}
-  </div>
+<div class="alert alert-success alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ message }}
+</div>
 {% endfor %}
 
 <div class="row">
@@ -25,5 +31,20 @@
       <button type="submit" class="btn btn-success">Save changes</button>
     </form>
   </div>
+  <section class="col-lg-6 col-md-8 col-sm-10">
+    <input type="file" id="file-input">
+    <div class="my-2">
+      <div class="result"></div>
+    </div>
+    <div class="my-2 img-result">
+      <img class="cropped" src="" alt="">
+      <button class="btn save hide">Save</button>
+    </div>
+  </section>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/upload/cropper.js' %}"></script>
+<script src="{% static 'js/upload/main.js' %}"></script>
 {% endblock %}
