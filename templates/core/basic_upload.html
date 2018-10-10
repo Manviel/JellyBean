@@ -6,6 +6,14 @@
 <li class="breadcrumb-item active">Upload</li>
 {% endblock %}
 
+{% block avatar %}
+<span id="gallery">
+  {% for photo in photos %}
+  <img class="avatar" src="{{ photo.file.url }}">
+  {% endfor %}
+</span>
+{% endblock %}
+
 {% block content %}
 <button type="button" class="btn btn-primary js-upload-photos mb-3">
   Upload photos
@@ -13,20 +21,6 @@
 
 <input id="fileupload" type="file" name="file" multiple style="display: none;" data-url="{% url 'upload' %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
 
-<table id="gallery" class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Photo</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for photo in photos %}
-    <tr>
-      <td><a href="{{ photo.file.url }}">{{ photo.file.name }}</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
 {% endblock %}
 
 {% block scripts %}

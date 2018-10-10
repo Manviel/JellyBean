@@ -25,6 +25,7 @@
         <ul class="navbar-nav ml-auto mr-2">
           <li class="nav-item dropdown">
             <a href="#" class="nav-link  dropdown-toggle" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% block avatar %}{% endblock %}
               {{ user.username }}
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
