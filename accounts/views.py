@@ -11,6 +11,7 @@ from social_django.models import UserSocialAuth
 from .forms import (BloggerSignUpForm, ReaderSignUpForm,
                     UserInformationUpdateForm)
 from .models import User
+from .tasks import email_greet
 
 
 def choose(request):
@@ -33,6 +34,7 @@ class ReaderSignUpView(CreateView):
             user,
             backend='django.contrib.auth.backends.ModelBackend'
         )
+        email_greet(user.email)
         return redirect('home')
 
 
