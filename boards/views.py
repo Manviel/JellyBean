@@ -11,6 +11,7 @@ from django.views.generic import FormView, ListView, UpdateView, View
 
 import xlwt
 from accounts.models import User
+from accounts.tasks import notice_reply
 
 from .forms import (BoardForm, GenerateRandomUserForm, NewTopicForm, PhotoForm,
                     PostForm)
@@ -282,6 +283,7 @@ def reply_topic(request, pk, topic_pk):
                 page=topic.get_page_count()
             )
 
+            notice_reply(request.user.email)
             return redirect(topic_post_url)
     else:
         form = PostForm()

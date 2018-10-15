@@ -16,10 +16,7 @@
 
     {% if post %}
     <small>
-      {% url 'topic_posts' board.pk post.pk as some_url %}
-      <a href="{{ some_url }}">
-        By {{ post.created_by.username }} at {{ post.created_at }}
-      </a>
+      By {{ post.created_by.username }} at {{ post.created_at }}
     </small>
     {% else %}
     <small class="text-muted">

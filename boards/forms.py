@@ -9,8 +9,7 @@ class NewTopicForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={'rows': 5, 'placeholder': 'What?'}
         ),
-        max_length=4000,
-        help_text='The max length is 4000'
+        max_length=4000
     )
 
     class Meta:

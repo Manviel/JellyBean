@@ -13,3 +13,12 @@ def email_greet(mail):
     recipient_list = [mail, ]
     send_mail(subject, message, email_from, recipient_list)
     return redirect('home')
+
+
+@shared_task
+def notice_reply(mail):
+    subject = 'Notification'
+    message = 'On your topic reacted'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [mail, ]
+    send_mail(subject, message, email_from, recipient_list)
